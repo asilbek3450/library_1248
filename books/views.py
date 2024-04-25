@@ -45,3 +45,6 @@ class BookListCreateAPIView(ListCreateAPIView):
 class BookRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookListSerializer
+
+
+# CRUD - Create, Retrieve(Read), Update, Delete

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#!e=#fqu_f+h@ckub=385^l4v4^+prs96wfx_fi1xm4cmcbjqq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['library1248-production.up.railway.app']
+ALLOWED_HOSTS = ['library1248-production.up.railway.app', '127.0.0.1']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'drf_yasg',
 
     'books',
 ]
@@ -46,7 +47,11 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication'
+    ],
 }
 
 MIDDLEWARE = [

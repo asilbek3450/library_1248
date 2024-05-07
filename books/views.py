@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, \
     ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from .models import Book
-from .serializers import BookListSerializer
+from .models import Book, Author
+from .serializers import BookListSerializer, AuthorListSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -101,14 +101,50 @@ class BookDetail(APIView):
     """
 
     def get(self, request, pk):
-        pass
+        book = Book.objects.get(id=pk)
+        serializer = BookListSerializer(book)
+        return Response(serializer.data)
 
     def put(self, request, pk):
-        pass
+        book = Book.objects.get(id=pk)
+        serializer = BookListSerializer(instance=book, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            data = {
+                'status': 'Kitob muvaffaqiyatli o`zgartirildi',
+                'kitob': serializer.data
+            }
+            return Response(data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, pk):
-        pass
+        book = Book.objects.get(id=pk)
+        serializer = BookListSerializer(instance=book, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            data = {
+                'status': 'Kitob muvaffaqiyatli o`zgartirildi',
+                'kitob': serializer.data
+            }
+            return Response(data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        pass
+        book = Book.objects.get(id=pk)
+        book.delete()
+        data = {
+            'status': 'Kitob muvaffaqiyatli o`chirildi',
+        }
+        return Response(data)
+
+
+class AuthorList(ListCreateAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorListSerializer
+
+
+class AuthorDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorListSerializer
+
 

@@ -34,8 +34,12 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('api/v1/', include('books.urls')),
+
+    # login, logout
+    path('api/v1/auth/', include('rest_framework.urls')),
+    path('api/v1/dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('api/v1/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),  # new
 
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

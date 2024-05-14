@@ -9,6 +9,45 @@ class BookListSerializer(serializers.ModelSerializer):
         fields = '__all__'
         # fields = ['id', 'title', 'author', 'price', 'published_date']
 
+    def validate(self, attrs):
+        title = attrs.get('title', None)
+        isbn = attrs.get('isbn', None)
+        price = attrs.get('price', None)
+        pages = attrs.get('pages', None)
+
+        if Book.objects.filter(title=title).exists():
+            raise serializers.ValidationError(
+                {
+                    'status': False,
+                    'message': 'Bunday kitob mavjud'
+                }
+            )
+
+        if Book.objects.filter(isbn=isbn).exists():
+            raise serializers.ValidationError(
+                {
+                    'status': False,
+                    'message': 'Bunday isbnli kitob mavjud'
+                }
+            )
+
+        if not 0 < price < 10000000:
+            raise serializers.ValidationError(
+                {
+                    'status': False,
+                    'message': 'Narx 0 dan 10000000 gacha bo\'lishi kerak'
+                }
+            )
+
+        if pages < 0:
+            raise serializers.ValidationError(
+                {
+                    'status': False,
+                    'message': 'Sahifa 0 dan katta bo\'lishi kerak'
+                }
+            )
+        return attrs
+
 
 # ModelSerializer vs Serializer
 # ModelSerializer - avtomatik ravishda modelni tanib, fieldlarni tuzib beradi
@@ -80,4 +119,4 @@ class AuthorListSerializer(serializers.ModelSerializer):
 #         instance.phone = validated_data.get('phone', instance.phone)
 #         instance.save()
 #         return instance
-#
+

@@ -38,8 +38,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # external apps
     'rest_framework',
     'drf_yasg',
+
+    # login,logout
+    'rest_framework.authtoken',  # new
+    'dj_rest_auth',  # new
+
+    # register
+    'allauth',  # new
+    'allauth.account',  # new
+    'allauth.socialaccount',  # new
+    'dj_rest_auth.registration',  # new
 
     'books',
 ]
@@ -62,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware",  # new
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -136,3 +148,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SITE_ID = 1
